@@ -87,6 +87,16 @@ export default function Home() {
           📢 お知らせ
         </button>
 
+        <a
+          href="https://pochi-english.vercel.app/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="newsLink"
+          style={{ display: "block", textAlign: "center", textDecoration: "none" }}
+        >
+          🐾 Pochi英語（本家）をプレイする
+        </a>
+
         <a href="https://ofuse.me/pochipochi"
           target="_blank"
           rel="noopener noreferrer"
