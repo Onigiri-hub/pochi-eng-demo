@@ -8,6 +8,7 @@ export default function UnitList(){
   const [units, setUnits] = useState({})
   const [allData, setAllData] = useState([])
   const [progressMap, setProgressMap] = useState({}) // ★ 全ユニットの進捗をまとめて管理
+  const [showLockedMsg, setShowLockedMsg] = useState(false)
   const router = useRouter()
   const scrollRefs = useRef({});
 
@@ -114,6 +115,82 @@ export default function UnitList(){
             </div>
           );
         })}
+
+        {/* ロック済みUnit16 */}
+        <div
+          className="unitCard"
+          onClick={() => setShowLockedMsg(true)}
+          style={{ opacity: 0.5, filter: "grayscale(1)", cursor: "pointer" }}
+        >
+          <img src="/images/illustrations/unitlist_button.png" className="unitCardBg" />
+          <div className="unitCardContent">
+            <div style={{ fontSize: "28px", marginBottom: "4px" }}>🔒</div>
+            <div className="unitTitle">Unit 16〜</div>
+            <div className="unitName">製品版で公開中</div>
+          </div>
+        </div>
+
+        {/* ロックメッセージポップアップ */}
+        {showLockedMsg && (
+          <div
+            onClick={() => setShowLockedMsg(false)}
+            style={{
+              position: "fixed", inset: 0,
+              background: "rgba(0,0,0,0.4)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              zIndex: 1000,
+            }}
+          >
+            <div
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                background: "#fff",
+                borderRadius: "16px",
+                padding: "28px 24px",
+                maxWidth: "280px",
+                width: "85%",
+                textAlign: "center",
+                boxShadow: "0 4px 20px rgba(0,0,0,0.2)",
+              }}
+            >
+              <div style={{ fontSize: "32px", marginBottom: "12px" }}>🐾</div>
+              <p style={{ fontSize: "15px", lineHeight: "1.7", margin: "0 0 20px", color: "#333" }}>
+                Unit16以降は<br />
+                <strong>Pochi英語（本家）</strong>で<br />
+                プレイできます！
+              </p>
+              <a
+                href="https://pochi-english.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: "block",
+                  background: "#FF9F43",
+                  color: "#fff",
+                  borderRadius: "20px",
+                  padding: "10px 0",
+                  fontWeight: "bold",
+                  textDecoration: "none",
+                  marginBottom: "10px",
+                }}
+              >
+                Pochi英語をプレイする
+              </a>
+              <button
+                onClick={() => setShowLockedMsg(false)}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "#aaa",
+                  fontSize: "14px",
+                  cursor: "pointer",
+                }}
+              >
+                閉じる
+              </button>
+            </div>
+          </div>
+        )}
 
       </div>
       <Navigation />
