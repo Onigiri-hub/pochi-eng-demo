@@ -1,0 +1,11 @@
+question_id,lesson_id,icon_first,icon_second,position_first,position_second,ja_show_first,ja_show_second,audio_auto,sentence_first_en,sentence_second_en,sentence_first_ja,sentence_second_ja,answer,chips,audio_first,audio_second
+u4_l10_p1,u4_l10,05.png,,left,none,1,,1,__　___　___　_____ .,,私は疲れてないよ,,I am not tired,I|am|not|tired,4-10-1-a.mp3,
+u4_l10_p2,u4_l10,05.png,,left,none,1,,1,___　___　___　_____ .,,あなたは忙しくない,,You are not busy,You|are|not|busy,4-10-2-a.mp3,
+u4_l10_p3,u4_l10,05.png,,left,none,1,,1,__　__　___　______ .,,彼は幸せじゃない,,He is not happy,He|is|not|happy,4-10-3-a.mp3,
+u4_l10_p4,u4_l10,05.png,,left,none,1,,1,___　__　___　__　______ .,,彼女は先生ではない,,She is not a teacher,She|is|not|a|teacher,4-10-4-a.mp3,
+u4_l10_p5,u4_l10,05.png,,left,none,1,,1,__　__　___　_____ .,,暑くはない,,It is not hot,It|is|not|hot,4-10-5-a.mp3,
+u4_l10_p6,u4_l10,05.png,,left,none,1,,1,___　___　___　______ .,,私たちは準備できてない,,We are not ready,We|are|not|ready,4-10-6-a.mp3,
+u4_l10_p7,u4_l10,05.png,,left,none,1,,1,____　___　___　______ .,,彼らは友達ではない,,They are not friends,They|are|not|friends,4-10-7-a.mp3,
+u4_l10_p8,u4_l10,05.png,,left,none,1,,1,____　__　___　__　____ .,,これは私のかばんではない,,This is not my bag,This|is|not|my|bag,4-10-8-a.mp3,
+u4_l10_p9,u4_l10,05.png,,left,none,1,,1,_____　_____　___　______ .,,これらは新しい本ではない,,These aren't new books,These|aren't|new|books,4-10-9-a.mp3,
+u4_l10_p10,u4_l10,05.png,,left,none,1,,1,_____　_____　___　_____ .,,あれらは大きいイヌではない,,Those aren't big dogs,Those|aren't|big|dogs,4-10-10-a.mp3,
