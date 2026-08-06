@@ -80,10 +80,10 @@ export default function Home() {
 
         </div>
 
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "12px", marginTop: "30px" }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "stretch", gap: "12px", marginTop: "30px", width: "fit-content", margin: "30px auto 0" }}>
           <button
             className="newsLink"
-            style={{ margin: 0, width: "100%" }}
+            style={{ margin: 0, textAlign: "center" }}
             onClick={() => router.push("/news")}
           >
             📢 お知らせ
@@ -94,7 +94,7 @@ export default function Home() {
             target="_blank"
             rel="noopener noreferrer"
             className="newsLink"
-            style={{ margin: 0, width: "100%", textAlign: "center", textDecoration: "none" }}
+            style={{ margin: 0, textAlign: "center", textDecoration: "none" }}
           >
             <span style={{ filter: "grayscale(1) brightness(0.3)" }}>🐾</span> Pochi英語（本家）をプレイする
           </a>
