@@ -3,13 +3,18 @@ import Navigation from "../components/Navigation";
 
 const newsItems = [
   {
+    date: "2026-08-05",
+    title: "Pochiお試し版を公開しました",
+    body: "",
+  },
+  {
     date: "2026-07-26",
     title: "実績を画像でシェアする機能を実装しました！",
     body: "",
   },
   {
     date: "2026-07-26",
-    title: "Unit25まで追加しました",
+    title: "Unit25まで追加しました（β版）",
     body: "",
   },
   {
