@@ -80,22 +80,25 @@ export default function Home() {
 
         </div>
 
-        <button
-          className="newsLink"
-          onClick={() => router.push("/news")}
-        >
-          📢 お知らせ
-        </button>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "12px", marginTop: "30px" }}>
+          <button
+            className="newsLink"
+            style={{ margin: 0, width: "100%" }}
+            onClick={() => router.push("/news")}
+          >
+            📢 お知らせ
+          </button>
 
-        <a
-          href="https://pochi-english.vercel.app/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="newsLink"
-          style={{ display: "block", textAlign: "center", textDecoration: "none" }}
-        >
-          🐾 Pochi英語（本家）をプレイする
-        </a>
+          <a
+            href="https://pochi-english.vercel.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="newsLink"
+            style={{ margin: 0, width: "100%", textAlign: "center", textDecoration: "none" }}
+          >
+            <span style={{ filter: "grayscale(1) brightness(0.3)" }}>🐾</span> Pochi英語（本家）をプレイする
+          </a>
+        </div>
 
         <a href="https://ofuse.me/pochipochi"
           target="_blank"
