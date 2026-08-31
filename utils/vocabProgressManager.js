@@ -29,3 +29,45 @@ export async function addVocabHistory(roundId, sectionId) {
   });
   localStorage.setItem("demo_vocab_history", JSON.stringify(history));
 }
+
+// ===== 並べ替え単語の履修・自信度ステータス（localStorageのみ・demo版）=====
+// 保存先: localStorage["arrange_word_status_{stage}"]
+//   = { va0001: { learned: true, confidence: "none"|"low"|"high" }, ... }
+
+// ステータスを取得（一覧表示用）
+export async function getArrangeWordStatus(stage) {
+  const local = localStorage.getItem(`arrange_word_status_${stage}`);
+  return local ? JSON.parse(local) : {};
+}
+
+// 右●：自信度をユーザー入力で保存（learnedは保持）
+export async function saveArrangeWordConfidence(stage, wordId, confidence) {
+  const key = `arrange_word_status_${stage}`;
+  const local = localStorage.getItem(key);
+  const current = local ? JSON.parse(local) : {};
+  current[wordId] = { ...(current[wordId] || { learned: false }), confidence };
+  localStorage.setItem(key, JSON.stringify(current));
+  return current;
+}
+
+// 左●：並べ替え問題を一度でも正解したら履修にする
+export async function markArrangeWordLearned(stage, wordId) {
+  const key = `arrange_word_status_${stage}`;
+  const local = localStorage.getItem(key);
+  const current = local ? JSON.parse(local) : {};
+  if (current[wordId]?.learned) return current; // 既に履修済みなら何もしない
+  current[wordId] = { confidence: "none", ...(current[wordId] || {}), learned: true };
+  localStorage.setItem(key, JSON.stringify(current));
+  return current;
+}
+
+// 並べて英単語（単語ベース・ラウンド制なし）の完了をhistoryに記録
+export async function addArrangeWordHistory(stageId) {
+  const history = JSON.parse(localStorage.getItem("demo_vocab_history") || "[]");
+  history.push({
+    stage_id: stageId,
+    mode: "arrangeWord",
+    dateString: new Date().toLocaleDateString("sv-SE"),
+  });
+  localStorage.setItem("demo_vocab_history", JSON.stringify(history));
+}

@@ -5,12 +5,13 @@ import { checkAndEarnBadges, loadBadgeList } from "../utils/badgeManager"
 import { useProfileContext } from "../utils/ProfileContext"
 import { updateStreak, calcMofu, addMofu, addTotalRounds } from "../utils/mofuManager"
 import { loadCSV } from "../utils/csvLoader"
+import { addArrangeWordHistory } from "../utils/vocabProgressManager"
 import ShareModal from "../components/ShareModal"
 
 export default function VocabComplete() {
   const router = useRouter()
   const { stage, section, round, isFirstClear, mode } = router.query
-  const isArrangeMode = mode === "arrange"
+  const isArrangeWord = mode === "arrangeWord" // 単語ベースの並べ替え（ラウンド制なし）
   const {
     setMofu, setStreak,
     setTotalRounds,
@@ -35,6 +36,11 @@ export default function VocabComplete() {
     async function handleComplete() {
       const firstClear = isFirstClear === "true"
 
+      // 並べて英単語（単語ベース）は完了ごとにhistoryへ記録
+      if (isArrangeWord) {
+        await addArrangeWordHistory(stage)
+      }
+
       const { count: streak, isFirstToday } = await updateStreak()
       setStreak(streak)
 
@@ -55,34 +61,33 @@ export default function VocabComplete() {
       const stageId = stage
       const completedStages = []
 
-      const sectionsCsv = isArrangeMode ? "/data/vocab/arrangeSectionList.csv" : "/data/vocab/sectionList.csv"
-      const allSections = await loadCSV(sectionsCsv)
-      const stageSections = allSections.filter(s => s.stage_id === stageId)
+      // Stageクリア判定（単語ベースの並べ替えはラウンド制がないのでスキップ）
+      if (!isArrangeWord) {
+        const allSections = await loadCSV("/data/vocab/sectionList.csv")
+        const stageSections = allSections.filter(s => s.stage_id === stageId)
 
-      const allRoundIds = []
-      await Promise.all(stageSections.map(async (sec) => {
-        const roundsCsv = isArrangeMode
-          ? `/data/vocab/arrange_rounds/${sec.arrange_rounds_csv}`
-          : `/data/vocab/rounds/${sec.rounds_csv}`
-        const rounds = await loadCSV(roundsCsv)
-        rounds.forEach(r => allRoundIds.push(r.round_id))
-      }))
+        const allRoundIds = []
+        await Promise.all(stageSections.map(async (sec) => {
+          const rounds = await loadCSV(`/data/vocab/rounds/${sec.rounds_csv}`)
+          rounds.forEach(r => allRoundIds.push(r.round_id))
+        }))
 
-      const clearedSet = new Set()
-      for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i)
-        if (key && key.startsWith("vocab_round_")) {
-          try {
-            const data = JSON.parse(localStorage.getItem(key) || "{}")
-            if (data.totalWords > 0 && (data.doneWords || []).length >= data.totalWords) {
-              clearedSet.add(key.replace("vocab_round_", ""))
-            }
-          } catch {}
+        const clearedSet = new Set()
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i)
+          if (key && key.startsWith("vocab_round_")) {
+            try {
+              const data = JSON.parse(localStorage.getItem(key) || "{}")
+              if (data.totalWords > 0 && (data.doneWords || []).length >= data.totalWords) {
+                clearedSet.add(key.replace("vocab_round_", ""))
+              }
+            } catch {}
+          }
         }
-      }
 
-      const isStageComplete = allRoundIds.every(id => clearedSet.has(id))
-      if (isStageComplete) completedStages.push(stageId)
+        const isStageComplete = allRoundIds.every(id => clearedSet.has(id))
+        if (isStageComplete) completedStages.push(stageId)
+      }
 
       const badges = await checkAndEarnBadges({
         streak,
@@ -289,7 +294,7 @@ export default function VocabComplete() {
             <div className="completeBottom">
               <button
                 className="finishButton"
-                onClick={() => router.replace(isArrangeMode ? `/arrangeSectionList?stage=${stage}` : `/sectionList?stage=${stage}`)}
+                onClick={() => router.replace(isArrangeWord ? `/arrangeSectionList?stage=${stage}` : `/sectionList?stage=${stage}`)}
                 data-sound
               >
                 次へ
