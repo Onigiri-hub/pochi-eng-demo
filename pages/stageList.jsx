@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/router"
 import Papa from "papaparse"
 import Navigation from "../components/Navigation"
-import { getArrangeWordStatus } from "../utils/vocabProgressManager"
+import { getArrangeWordStatus, getAllClearedRoundIds } from "../utils/vocabProgressManager"
 
 // 円グラフ（ドーナツ型の進捗リング）
 function CircleProgress({ value, total, color, label }) {
@@ -59,18 +59,7 @@ export default function StageList() {
       const secData = Papa.parse(await secRes.text(), { header: true, skipEmptyLines: true }).data
       setStages(stageData)
 
-      const clearedSet = new Set()
-      for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i)
-        if (key && key.startsWith("vocab_round_")) {
-          try {
-            const data = JSON.parse(localStorage.getItem(key) || "{}")
-            if (data.totalWords > 0 && (data.doneWords || []).length >= data.totalWords) {
-              clearedSet.add(key.replace("vocab_round_", ""))
-            }
-          } catch {}
-        }
-      }
+      const clearedSet = getAllClearedRoundIds()
 
       const map = {}
       await Promise.all(

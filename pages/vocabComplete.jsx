@@ -5,7 +5,7 @@ import { checkAndEarnBadges, loadBadgeList } from "../utils/badgeManager"
 import { useProfileContext } from "../utils/ProfileContext"
 import { updateStreak, calcMofu, addMofu, addTotalRounds } from "../utils/mofuManager"
 import { loadCSV } from "../utils/csvLoader"
-import { addArrangeWordHistory } from "../utils/vocabProgressManager"
+import { addArrangeWordHistory, getAllClearedRoundIds } from "../utils/vocabProgressManager"
 import ShareModal from "../components/ShareModal"
 
 export default function VocabComplete() {
@@ -72,18 +72,7 @@ export default function VocabComplete() {
           rounds.forEach(r => allRoundIds.push(r.round_id))
         }))
 
-        const clearedSet = new Set()
-        for (let i = 0; i < localStorage.length; i++) {
-          const key = localStorage.key(i)
-          if (key && key.startsWith("vocab_round_")) {
-            try {
-              const data = JSON.parse(localStorage.getItem(key) || "{}")
-              if (data.totalWords > 0 && (data.doneWords || []).length >= data.totalWords) {
-                clearedSet.add(key.replace("vocab_round_", ""))
-              }
-            } catch {}
-          }
-        }
+        const clearedSet = getAllClearedRoundIds()
 
         const isStageComplete = allRoundIds.every(id => clearedSet.has(id))
         if (isStageComplete) completedStages.push(stageId)
